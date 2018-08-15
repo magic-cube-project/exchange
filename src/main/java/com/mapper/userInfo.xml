@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bean.UserInfo">
+    <insert id="add" parameterType="com.bean.UserInfo">
+       INSERT INTO `user_info` (`user_id`,`user_token`,`password`,`name`,`tel`,`create_time`) VALUES (#{user_id}, #{user_token},#{password},#{name},#{tel},#{create_time});
+    </insert>
+    <!--搜索用户的记录-->
+    <select id="getCount" resultType="java.lang.Integer">
+            select count(*) from `user_info`
+    </select>
+
+    <select id="checkTelExist" parameterType="com.bean.UserInfo" resultType="com.bean.UserInfo">
+        select * from `user_info` where tel = #{tel} AND state = 1;
+    </select>
+    <select id="checkExist" parameterType="com.bean.UserInfo" resultType="com.bean.UserInfo">
+        select * from `user_info` where tel = #{tel} AND password = #{password};
+    </select>
+</mapper>

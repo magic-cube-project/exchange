@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bean.VerificationCode">
+    <insert id="add" parameterType="com.bean.VerificationCode">
+       INSERT INTO `code` (`tel`, `code`, `create_time`,`expires_time`) VALUES (#{tel}, #{code}, #{create_time},#{expires_time});
+    </insert>
+    <select id="check" parameterType="com.bean.VerificationCode" resultType="com.bean.VerificationCode">
+        select * from `code` where tel = #{tel} AND code = #{code} AND state = #{state} AND expires_time > #{expires_time}
+    </select>
+    <update id="update" parameterType="com.bean.VerificationCode" >
+        UPDATE `code` SET `state` = #{state} WHERE `code`.`id` = #{id};
+    </update>
+</mapper>
