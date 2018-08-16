@@ -67,7 +67,7 @@ public class TokenController {
         return tokenMd5;
     }
     /**
-     * 取值MD5发生器
+     * 对一个字符串得到MD5
      * @param sourceStr
      * @return
      */

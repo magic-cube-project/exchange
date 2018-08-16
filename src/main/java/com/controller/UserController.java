@@ -6,6 +6,7 @@ import com.util.AccountValidatorUtil;
 import com.util.Response;
 import com.util.ResponseUtil;
 import com.util.TokenUitil;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
+@EnableRedisHttpSession
 public class UserController{
     /**
      * 用户登录接口

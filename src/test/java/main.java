@@ -1,13 +1,9 @@
-import org.apache.commons.codec.binary.Base64;
+import com.bean.AppUserLink;
+import com.model.OpenUser;
 
 public class main {
     public static void main( String[] args){
-     String base64String="whuang123";
-      byte[] result = Base64.encodeBase64(base64String.getBytes());
-      String r = String.valueOf(result);
-      System.out.println(r);
-      String e = String.valueOf(Base64.decodeBase64(r));
-      System.out.println(e);
-
+        AppUserLink o= OpenUser.add(1,1);
+        System.out.println(o.getOpenid());
     }
 }

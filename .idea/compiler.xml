@@ -9,5 +9,8 @@
         <module name="exchange" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="exchange" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

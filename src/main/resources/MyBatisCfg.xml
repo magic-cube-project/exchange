@@ -17,6 +17,11 @@
                 <property name="url" value="jdbc:mysql://develop.mofangvr.com:2809/test" />
                 <property name="username" value="root" />
                 <property name="password" value="123Qwe!" />
+                <!--连接池的性能参数描述-->
+                <property name="poolMaximumIdleConnections" value="0"/>
+                <property name="poolMaximumActiveConnections" value="1000"/>
+                <property name="poolPingQuery" value="SELECT 1 FROM DUAL" />
+                <property name="poolPingEnabled" value="true" />
             </dataSource>
         </environment>
     </environments>
@@ -26,5 +31,6 @@
         <mapper resource="com/mapper/accessToken.xml" />
         <mapper resource="com/mapper/VerificationCode.xml" />
         <mapper resource="com/mapper/userInfo.xml" />
+        <mapper resource="com/mapper/appUserLink.xml"/>
     </mappers>
 </configuration>
