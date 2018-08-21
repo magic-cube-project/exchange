@@ -5,6 +5,7 @@ import com.util.Response;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by szc on 2018/8/14.
@@ -49,7 +50,9 @@ public class VerificationCode {
         // 在数据库中保存验证码
         SqlSession session = MyBatisUtil.getSqlSession();
         try {
-           verificationCode =  session.selectOne("com.bean.VerificationCode.check", verificationCode);
+            List verificationCodeList = session.selectList("com.bean.VerificationCode.check",verificationCode);
+            verificationCode  = (com.bean.VerificationCode) verificationCodeList.get(0);
+            //           verificationCode =  session.selectOne("com.bean.VerificationCode.check", verificationCode);
 
 
            if(verificationCode==null){

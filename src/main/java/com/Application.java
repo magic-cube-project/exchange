@@ -5,7 +5,6 @@ package com;
 
 import com.config.WebAppConfig;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -16,7 +15,6 @@ public class Application extends WebAppConfig
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
         SpringApplication.run(Application.class, args);
     }
 }

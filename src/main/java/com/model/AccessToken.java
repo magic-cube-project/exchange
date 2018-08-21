@@ -38,7 +38,9 @@ public class AccessToken {
         }
         session.commit();
         session.close();
+
         map.remove("creat_time");
+        map.remove("app_id");
 
         return map;
     }

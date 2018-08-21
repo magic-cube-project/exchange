@@ -17,4 +17,7 @@
     <select id="checkExist" parameterType="com.bean.UserInfo" resultType="com.bean.UserInfo">
         select * from `user_info` where tel = #{tel} AND password = #{password};
     </select>
+    <select id="getInfoByUserId" parameterType="com.bean.UserInfo" resultType="com.bean.UserInfo">
+        select * from `user_info` where user_id = #{user_id};
+    </select>
 </mapper>

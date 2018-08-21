@@ -2,6 +2,7 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <properties resource="application.properties"/>
     <typeAliases>
         <package name="com.bean"></package>
     </typeAliases>
@@ -13,10 +14,11 @@
         <environment id="development">
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://develop.mofangvr.com:2809/test" />
-                <property name="username" value="root" />
-                <property name="password" value="123Qwe!" />
+                <property name="driver" value="${spring.datasource.driverClassName}" />
+                <property name="url" value="${spring.datasource.url}" />
+                <property name="username" value="${spring.datasource.username}" />
+                <property name="password" value="${spring.datasource.password}" />
+
                 <!--连接池的性能参数描述-->
                 <property name="poolMaximumIdleConnections" value="0"/>
                 <property name="poolMaximumActiveConnections" value="1000"/>

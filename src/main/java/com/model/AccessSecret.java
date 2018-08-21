@@ -4,9 +4,7 @@ import com.bean.AccessSecretInfo;
 import com.util.MyBatisUtil;
 import com.util.Response;
 import org.apache.ibatis.session.SqlSession;
-/**
- * Created by szc on 2018/8/14.
- */
+
 public class AccessSecret {
     /**
      * 检查用户秘钥是否正确

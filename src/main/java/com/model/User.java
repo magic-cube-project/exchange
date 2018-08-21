@@ -71,14 +71,13 @@ public class User {
             session.close();
         }
         return _is;
-
     }
 
     /**
      * 判断用户是否存在
      * @return
      */
-    public static boolean checkUserExist(String tel,String password){
+    public static UserInfo checkUserExist(String tel,String password){
         boolean _is = false;
         UserInfo userInfo = new UserInfo();
         userInfo.setTel(tel);
@@ -99,7 +98,28 @@ public class User {
             session.commit();
             session.close();
         }
-
-        return _is;
+        return userInfo;
+    }
+    public static UserInfo getUserInfo(int user_id){
+        boolean _is = false;
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUser_id(user_id);
+        SqlSession session = MyBatisUtil.getSqlSession();
+        try {
+            userInfo =  session.selectOne("com.bean.UserInfo.getInfoByUserId", userInfo);
+            if(userInfo==null){
+                _is = false;
+            } else {
+                _is = true;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            session.rollback();
+        }
+        finally {
+            session.commit();
+            session.close();
+        }
+        return userInfo;
     }
 }

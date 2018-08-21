@@ -1,5 +1,7 @@
 package com.controller;
 
+import com.bean.UserInfo;
+import com.bean.UserSession;
 import com.model.User;
 import com.model.VerificationCode;
 import com.util.AccountValidatorUtil;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 
 /**
  * 用户相关操作
@@ -29,18 +32,21 @@ public class UserController{
      */
     @RequestMapping(value = "login",method = RequestMethod.POST)
     String login(@RequestParam(value = "tel", required = true) String tel,
-                 @RequestParam(value = "password", required = false) String password){
+                 @RequestParam(value = "password", required = false) String password,HttpSession session){
         Response response = ResponseUtil.ceateRespone();
         password = TokenUitil.mergeToken(password,"MCC");
-        if(!User.checkUserExist(tel,password)){
+        UserInfo userInfo = User.checkUserExist(tel,password);
+        if(userInfo==null){
             response.error(-10012,"用户不存在或密码不正确");
         } else {
            // 此处需要建立用户session
+            UserSession userSession= new UserSession();
+            userSession.setUser_id(userInfo.getUser_id());
+            session.setAttribute("user", userSession);
         }
         // 返回数据
         return response.toJSON();
     }
-
     /**
      * 用户注册接口
      * @return
@@ -70,7 +76,6 @@ public class UserController{
         User.Register(response,name,tel,password);
         return response.toJSON();
     }
-
     /**
      * 用户获取验证码
      * @return
@@ -87,14 +92,53 @@ public class UserController{
         }
         return response.toJSON();
     }
-    @RequestMapping("test")
-    String test(HttpSession session){
-        session.setAttribute("test", "123456");
-        return "test";
+
+    /**
+     * 用户登出
+     * @param session
+     * @return
+     */
+    @RequestMapping("logout")
+    String logout(HttpSession session){
+        Response response = ResponseUtil.ceateRespone();
+        try{
+            session.removeAttribute("user");
+        } finally {
+            return response.toJSON();
+        }
     }
-    @RequestMapping("test2")
-    String test2(HttpSession session){
-        String res = (String) session.getAttribute("test");
-        return "test2"+res;
+
+    /**
+     * 获取个人的用户中心
+     * @param session
+     * @return
+     */
+    @RequestMapping("getInfo")
+    String getInfo(HttpSession session){
+        Response response = ResponseUtil.ceateRespone();
+        UserSession userSession = (UserSession) session.getAttribute("user");
+        if(userSession==null){
+            response.error(-10015,"用户未登录");
+        }
+
+        UserInfo userInfo = User.getUserInfo(userSession.getUser_id());
+
+        HashMap map = new HashMap();
+        // 设置请求返回内容
+        map.put("name",userInfo.getName());
+        map.put("lv",userInfo.getLv());
+        map.put("exp",userInfo.getExp());
+        map.put("headimg",userInfo.getHeadimg());
+        map.put("user_id",userInfo.getUser_id());
+        map.put("tel",userInfo.getTel());
+        response.setResult(map);
+
+        return response.toJSON();
+    }
+
+    @RequestMapping("test3")
+    String test3(HttpSession session){
+        UserSession userSession= (UserSession) session.getAttribute("user");
+        return "user_id:"+userSession.getUser_id();
     }
 }
