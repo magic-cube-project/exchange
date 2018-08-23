@@ -6,4 +6,10 @@
     <select id="GetUserByID" parameterType="int" resultType="User">
         select * from `user` where id = #{id}
     </select>
+    <select id="getBalance" parameterType="hashmap" resultType="com.bean.AccountBalance">
+        SELECT Balance,Currency,Pending,Tag FROM AccountBalances WHERE AccountId = #{user_id}
+        <if test="coin!=null">
+            AND Currency =  #{coin}
+        </if>
+    </select>
 </mapper>

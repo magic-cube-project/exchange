@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.bean.AccountBalance;
 import com.bean.UserInfo;
 import com.bean.UserSession;
 import com.model.User;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * 用户相关操作
@@ -56,7 +58,6 @@ public class UserController{
                     @RequestParam(value = "code", required = true) int code,
                     @RequestParam(value = "name", required = true) String name,
                     @RequestParam(value = "password", required = false) String password){
-
         if(password==null){
             password = "1234567890";
         }
@@ -65,7 +66,6 @@ public class UserController{
         if(!response.isSuccess()){
             return response.toJSON();
         }
-
         // 判断手机号是否存在
         if(User.checkTelExist(tel)){
             response.error(-10009,"手机号已存在");
@@ -101,6 +101,13 @@ public class UserController{
     @RequestMapping("logout")
     String logout(HttpSession session){
         Response response = ResponseUtil.ceateRespone();
+
+        UserSession userSession = (UserSession) session.getAttribute("user");
+        if(userSession==null){
+            response.error(-10015,"用户未登录");
+            return response.toJSON();
+        }
+
         try{
             session.removeAttribute("user");
         } finally {
@@ -119,6 +126,7 @@ public class UserController{
         UserSession userSession = (UserSession) session.getAttribute("user");
         if(userSession==null){
             response.error(-10015,"用户未登录");
+            return response.toJSON();
         }
 
         UserInfo userInfo = User.getUserInfo(userSession.getUser_id());
@@ -136,9 +144,24 @@ public class UserController{
         return response.toJSON();
     }
 
-    @RequestMapping("test3")
-    String test3(HttpSession session){
-        UserSession userSession= (UserSession) session.getAttribute("user");
-        return "user_id:"+userSession.getUser_id();
+    @RequestMapping("balance")
+    String balance(HttpSession session,@RequestParam(value = "coin", required = false,defaultValue = "0") String coin){
+        Response response = ResponseUtil.ceateRespone();
+        UserSession userSession = (UserSession) session.getAttribute("user");
+        if(userSession==null){
+            response.error(-10015,"用户未登录");
+            return response.toJSON();
+        }
+        UserInfo userInfo = User.getUserInfo(userSession.getUser_id());
+        int user_id = userInfo.getUser_id();
+        System.out.println("用户号"+user_id);
+        // 如果coin货币请求all 请求所有的货币
+
+        List<AccountBalance> accountBalances = User.getBalance(user_id,coin);
+        HashMap map = new HashMap();
+        map.put("list",accountBalances);
+        response.setResult(map);
+        return response.toJSON();
     }
+
 }

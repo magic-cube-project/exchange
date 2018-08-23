@@ -1,12 +1,16 @@
 package com.model;
 
+import com.bean.AccountBalance;
 import com.bean.UserInfo;
+import com.flkj.service.ThirdParty;
 import com.util.MyBatisUtil;
 import com.util.Response;
 import com.util.TokenUitil;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class User {
     /**
@@ -31,8 +35,9 @@ public class User {
         SqlSession session = MyBatisUtil.getSqlSession();
         try {
 
-            int num = (int) session.selectList("com.bean.UserInfo.getCount").get(0);
-            userInfo.setUser_id(num+1);
+            // 告诉第三方平台我们注册的用户
+            int num = ThirdParty.CreateUsers(tel,tel);
+            userInfo.setUser_id(num);
             // 插入用户数据info表
             session.insert("com.bean.UserInfo.add", userInfo);
 
@@ -121,5 +126,27 @@ public class User {
             session.close();
         }
         return userInfo;
+    }
+
+    public static List<AccountBalance> getBalance(int user_id,String coin){
+
+        SqlSession session = MyBatisUtil.getSqlSession();
+        List<AccountBalance> accountBalances =  null;
+        HashMap hashMap = new HashMap();
+        hashMap.put("user_id",user_id);
+        if(!coin.equals("0")) {
+            hashMap.put("coin", coin);
+        }
+        try {
+           accountBalances =  session.selectList("com.bean.User.getBalance", hashMap);
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            session.commit();
+            session.close();
+        }
+        return accountBalances;
     }
 }

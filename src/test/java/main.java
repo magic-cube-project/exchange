@@ -7,7 +7,6 @@ public class main {
     public static void main( String[] args){
 
         OkHttpClient client = new OkHttpClient();
-
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\n  \"appId\": \"leyou\",\n  \"appSecret\": \"1eYou@8*93\",\n  \"scope\": \"partner\"\n}");
         Request request = new Request.Builder()

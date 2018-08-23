@@ -1,12 +1,14 @@
 package com.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by szc on 2018/8/14.
  */
-public class AccessToken {
+public class AccessToken implements Serializable {
     private int id;
     private String creat_time;
-    private String app_id;
+    private int app_id;
     private String access_token;
     private String expires_time;
 
@@ -26,11 +28,11 @@ public class AccessToken {
         this.creat_time = creat_time;
     }
 
-    public String getApp_id() {
+    public int getApp_id() {
         return app_id;
     }
 
-    public void setApp_id(String app_id) {
+    public void setApp_id(int app_id) {
         this.app_id = app_id;
     }
 

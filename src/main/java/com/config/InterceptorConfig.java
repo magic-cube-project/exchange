@@ -16,7 +16,7 @@ public class InterceptorConfig  implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         HttpSession session = httpServletRequest.getSession();
 
-        System.out.printf("---------------------开始进入请求地址拦截----------------------------\n");
+//        System.out.printf("---------------------开始进入请求地址拦截----------------------------\n");
 
         try {
             String  yy= (String)session.getAttribute("test");
@@ -26,7 +26,7 @@ public class InterceptorConfig  implements HandlerInterceptor {
         } catch (Exception e){
 
         }
-        System.out.printf("---------------------地址拦截完成----------------------------\n");
+//        System.out.printf("---------------------地址拦截完成----------------------------\n");
         return true;
     }
 

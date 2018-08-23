@@ -15,7 +15,7 @@
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
                 <property name="driver" value="${spring.datasource.driverClassName}" />
-                <property name="url" value="${spring.datasource.url}" />
+                <property name="url" value="${spring.datasource.url}?useUnicode=true&amp;characterEncoding=UTF-8" />
                 <property name="username" value="${spring.datasource.username}" />
                 <property name="password" value="${spring.datasource.password}" />
 
@@ -34,5 +34,7 @@
         <mapper resource="com/mapper/VerificationCode.xml" />
         <mapper resource="com/mapper/userInfo.xml" />
         <mapper resource="com/mapper/appUserLink.xml"/>
+        <mapper resource="com/mapper/appSendcoinList.xml"/>
+        <mapper resource="com/mapper/mccGood.xml"/>
     </mappers>
 </configuration>
