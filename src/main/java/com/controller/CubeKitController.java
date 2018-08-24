@@ -9,7 +9,6 @@ import com.model.User;
 import com.util.Response;
 import com.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,8 +28,7 @@ import java.util.List;
 public class CubeKitController {
     @Autowired
     private RedisTemplate redisTemplate;
-    @Value("${com.flkj.exchange_coin.thirdParty}")
-    private String baseUrl;
+
     @RequestMapping("sendCoin")
     String sendCoin(@RequestParam(value = "access_token", required = true) String access_token,
                     @RequestParam(value = "openid", required = true) String openid,

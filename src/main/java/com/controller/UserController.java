@@ -85,8 +85,8 @@ public class UserController{
         Response response = ResponseUtil.ceateRespone();
 
         if(AccountValidatorUtil.isMobile(tel)){
-            // 暂定当前的验证码666666
-            VerificationCode.saveCode(response,tel,666666);
+            // 获取当前的验证码
+            VerificationCode.saveCode(response,tel,VerificationCode.createCode());
         } else {
             response.error(-10014,"手机号不合法");
         }
