@@ -5,13 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by szc on 2018/8/20.
  */
 @RestController
+@EnableRedisHttpSession
 @RequestMapping("/test")
 public class testController {
     @Autowired
@@ -48,6 +52,17 @@ public class testController {
         redisTemplate.opsForValue().set("user1",userVo);
         System.out.println(redisTemplate.opsForValue().get("user1"));
         return "r2";
+    }
+
+    @RequestMapping("r3")
+    public String r3(HttpSession session){
+        session.setAttribute("test_session", "test_session");
+        return "r3";
+    }
+
+    @RequestMapping("r4")
+    public String r4(HttpSession session){
+        return (String) session.getAttribute("test_session");
     }
 
 }

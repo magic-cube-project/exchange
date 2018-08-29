@@ -54,16 +54,14 @@ public class VerificationCode {
         SqlSession session = MyBatisUtil.getSqlSession();
         try {
             List verificationCodeList = session.selectList("com.bean.VerificationCode.check",verificationCode);
-            verificationCode  = (com.bean.VerificationCode) verificationCodeList.get(0);
-            //           verificationCode =  session.selectOne("com.bean.VerificationCode.check", verificationCode);
 
-
-           if(verificationCode==null){
+           if(verificationCodeList.isEmpty()){
                response.error(-20001,"验证码不存在");
            }else {
+               // 验证码存在的情况处理
+               verificationCode  = (com.bean.VerificationCode) verificationCodeList.get(0);
                verificationCode.setState(0);
                session.update("com.bean.VerificationCode.update",verificationCode);
-
            }
 
         } catch (Exception e){

@@ -32,13 +32,17 @@ public class InterceptorConfig  implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-       // System.out.printf("--------------处理请求完成后视图渲染之前的处理操作---------------\n");
+        System.out.printf("--------------处理请求完成后视图渲染之前的处理操作---------------\n");
 
     }
 
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        //System.out.printf("---------------视图渲染之后的操作-------------------------0\n");
+//        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+//        httpServletResponse.setHeader("Access-Control-Allow-Methods","*");
+//        httpServletResponse.setHeader("Access-Control-Allow-Headers","*");
+//        httpServletResponse.setHeader("Access-Control-Max-Age","86400");
+        System.out.printf("---------------视图渲染之后的操作-------------------------\n");
     }
 }

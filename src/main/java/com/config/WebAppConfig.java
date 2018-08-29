@@ -20,6 +20,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         registry.addMapping("*")
                 .allowedOrigins("*")
                 .allowedMethods("*")
-                .allowCredentials(false).maxAge(3600);
+                .allowCredentials(true).maxAge(3600);
     }
 }
