@@ -32,7 +32,7 @@ public class UserController{
      * 用户登录接口
      * @return
      */
-    @RequestMapping(value = "login",method = RequestMethod.POST)
+    @RequestMapping(value = "login")
     String login(@RequestParam(value = "tel", required = true) String tel,
                  @RequestParam(value = "password", required = false) String password,HttpSession session){
         Response response = ResponseUtil.ceateRespone();
@@ -43,6 +43,7 @@ public class UserController{
         } else {
            // 此处需要建立用户session
             UserSession userSession= new UserSession();
+            System.out.println(userInfo.getUser_id());
             userSession.setUser_id(userInfo.getUser_id());
             session.setAttribute("user", userSession);
         }

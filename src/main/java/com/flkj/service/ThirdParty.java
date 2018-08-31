@@ -7,6 +7,7 @@ import com.bean.AppSendcoinList;
 import com.flkj.bean.ThirdPartyToken;
 import com.flkj.config.BaseUrl;
 import com.squareup.okhttp.*;
+import com.util.TokenUitil;
 
 import java.io.IOException;
 import java.util.Date;
@@ -72,7 +73,7 @@ public class ThirdParty {
         int user_id = 0;
 
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "[\n  {\n    \"username\": \""+username+"\",\n    \"password\": \"S%tring8\",\n    \"cellphone\": \""+cellphone+"\",\n  }\n]");
+        RequestBody body = RequestBody.create(mediaType, "[\n  {\n    \"username\": \""+ TokenUitil.genetateToken()+"\",\n    \"password\": \"S%tring8\",\n    \"cellphone\": \""+TokenUitil.genetateToken()+"\",\n  }\n]");
         Request request = new Request.Builder()
                 .url(new BaseUrl().getThirdParty()+"CreateUsers")
                 .post(body)

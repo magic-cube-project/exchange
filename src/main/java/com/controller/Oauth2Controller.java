@@ -60,6 +60,7 @@ public class Oauth2Controller {
             response.error(-10015,"用户未登录");
             return response.toJSON();
         }
+        System.out.println(userSession.getUser_id());
         UserInfo userInfo = User.getUserInfo(userSession.getUser_id());
 
         int user_id = userInfo.getUser_id();
