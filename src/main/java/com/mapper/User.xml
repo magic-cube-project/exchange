@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bean.User">
-    <select id="GetUserByID" parameterType="int" resultType="User">
+    <select id="GetUserByID" parameterType="int" resultType="com.bean.User">
         select * from `user` where id = #{id}
     </select>
     <select id="getBalance" parameterType="hashmap" resultType="com.bean.AccountBalance">
