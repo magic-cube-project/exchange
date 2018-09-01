@@ -36,5 +36,6 @@
         <mapper resource="com/mapper/appUserLink.xml"/>
         <mapper resource="com/mapper/appSendcoinList.xml"/>
         <mapper resource="com/mapper/mccGood.xml"/>
+        <mapper resource="com/mapper/appInfo.xml"/>
     </mappers>
 </configuration>
