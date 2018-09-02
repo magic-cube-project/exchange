@@ -1,6 +1,11 @@
 package com.controller;
 
 import com.bean.UserVo;
+import com.bean.VerificationCode;
+import com.util.MyBatisUtil;
+import com.util.Response;
+import com.util.ResponseUtil;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -10,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by szc on 2018/8/20.
@@ -63,6 +70,26 @@ public class testController {
     @RequestMapping("r4")
     public String r4(HttpSession session){
         return (String) session.getAttribute("test_session");
+    }
+    @RequestMapping("r5")
+    public String r5(){
+        Response response = ResponseUtil.ceateRespone();
+        SqlSession session = MyBatisUtil.getSqlSession();
+        List<VerificationCode> list = null;
+
+        try {
+            list =  session.selectList("com.bean.VerificationCode.all");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            session.commit();
+            session.close();
+        }
+
+        response.setResult("list",list);
+
+        return response.toJSON();
     }
 
 }

@@ -138,6 +138,7 @@ public class UserController{
         map.put("lv",userInfo.getLv());
         map.put("exp",userInfo.getExp());
         map.put("headimg",userInfo.getHeadimg());
+        System.out.println(userInfo.getHeadimg());
         map.put("user_id",userInfo.getUser_id());
         map.put("tel",userInfo.getTel());
         response.setResult(map);

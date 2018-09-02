@@ -12,4 +12,7 @@
     <update id="update" parameterType="com.bean.VerificationCode" >
         UPDATE `code` SET `state` = #{state} WHERE `code`.`id` = #{id};
     </update>
+    <select id="all" resultType="com.bean.VerificationCode">
+        select * from `code`
+    </select>
 </mapper>

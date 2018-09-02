@@ -11,6 +11,5 @@ public class test3 {
     private static StringRedisTemplate stringRedisTemplate;
     public static void main(String[] args){
         stringRedisTemplate.opsForValue().set("test", "111");
-
     }
 }
