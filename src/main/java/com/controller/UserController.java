@@ -77,6 +77,39 @@ public class UserController{
         User.Register(response,name,tel,password);
         return response.toJSON();
     }
+
+    /**
+     * 修改密码
+     * @param tel
+     * @param code
+     * @param password
+     * @return
+     */
+    @RequestMapping(value = "changePassword",method = RequestMethod.POST)
+    String changePassword(@RequestParam(value = "tel", required = true) String tel,
+                          @RequestParam(value = "code", required = true) int code,
+                          @RequestParam(value = "password", required = false) String password){
+        if(password==null){
+            password = "1234567890";
+        }
+        Response response = ResponseUtil.ceateRespone();
+        VerificationCode.checkCode(response,tel,code);
+        if(!response.isSuccess()){
+            return response.toJSON();
+        }
+        // 判断手机号是否存在
+        if(!User.checkTelExist(tel)){
+            response.error(-10013,"当前用户不存在");
+            return response.toJSON();
+        }
+        // 对密码的字符串进行加密
+        password = TokenUitil.mergeToken(password,"MCC");
+
+        User.changePassword(response,tel,password);
+        return response.toJSON();
+
+    }
+
     /**
      * 用户获取验证码
      * @return

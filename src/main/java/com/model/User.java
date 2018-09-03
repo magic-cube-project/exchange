@@ -50,6 +50,30 @@ public class User {
         session.close();
     }
 
+    public static void changePassword(Response response,String tel, String password){
+
+        UserInfo userInfo = new UserInfo();
+        // 设置用户token
+        userInfo.setUser_token(TokenUitil.genetateToken());
+        userInfo.setTel(tel);
+        userInfo.setPassword(password);
+
+        // 查询当前的总条数
+        SqlSession session = MyBatisUtil.getSqlSession();
+        try {
+
+            // 插入用户数据info表
+            session.update("com.bean.UserInfo.changePassword", userInfo);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            session.rollback();
+            response.error(-10000,"数据库出现错误");
+        }
+        session.commit();
+        session.close();
+    }
+
     /**
      * 检查电话号码是否存在
      * @param tel

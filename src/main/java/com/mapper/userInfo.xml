@@ -20,4 +20,8 @@
     <select id="getInfoByUserId" parameterType="com.bean.UserInfo" resultType="com.bean.UserInfo">
         select * from `user_info` where user_id = #{user_id};
     </select>
+    <!--changePassword-->
+    <update id="changePassword" parameterType="com.bean.UserInfo">
+        UPDATE `user_info` SET `password` = #{password} WHERE `user_info`.`tel` = #{tel};
+    </update>
 </mapper>
