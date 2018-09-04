@@ -8,7 +8,7 @@ public class BaseUrl {
     private String thirdParty;
 
     public BaseUrl(){
-        thirdParty = "http://leyou.586886.com/api/ThirdParty/";
+        thirdParty = "https://leyou.586886.com/api/ThirdParty/";
     }
     public String getThirdParty() {
         return thirdParty;
