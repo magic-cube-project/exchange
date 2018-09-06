@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bean.AccessToken;
 import com.bean.AccountBalance;
 import com.bean.AppUserLink;
@@ -10,6 +11,7 @@ import com.util.Response;
 import com.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +58,27 @@ public class CubeKitController {
         return response.toJSON();
     }
 
+
+    /**
+     * 内部的发币接口
+     * @param jsonParam
+     * @return
+     */
+    @RequestMapping("sendCoinApi")
+    String sendCoinAPi(@RequestBody JSONObject jsonParam){
+        Response response = ResponseUtil.ceateRespone();
+        System.out.println(jsonParam.toJSONString());
+        // 插入发放记录
+        int app_id = (int) jsonParam.get("app_id");
+        int user_id = (int) jsonParam.get("user_id");
+        int amount = (int)jsonParam.get("amount");
+        String coin = (String) jsonParam.get("coin");
+        String description = (String) jsonParam.get("description");
+        String tag = (String) jsonParam.get("tag");
+        Sendcoin.add(app_id,user_id,amount,coin,description,tag,response);
+        return response.toJSON();
+    }
+
     @RequestMapping("balance")
     String balance(@RequestParam(value = "access_token", required = true) String access_token,
                    @RequestParam(value = "openid", required = true) String openid,
@@ -76,7 +99,6 @@ public class CubeKitController {
         }
         // 需要查询用户的user_id
         int user_id = appUserLink.getUser_id();
-
 
         List<AccountBalance> accountBalances = User.getBalance(user_id,coin);
         HashMap map = new HashMap();

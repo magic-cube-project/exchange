@@ -111,7 +111,6 @@ public class ThirdParty {
             Response response = client.newCall(request).execute();
             res =  response.body().string();
             System.out.println(res);
-            _is = (boolean) JSON.parseObject(res).get("success");
         } catch (IOException e) {
             e.printStackTrace();
             return null;
