@@ -1,10 +1,10 @@
 package com.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bean.AccessToken;
 import com.bean.AppInfo;
-import com.bean.AppUserLink;
+import com.flkj.service.ThirdParty;
 import com.model.App;
-import com.model.OpenUser;
 import com.util.Response;
 import com.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +48,25 @@ public class ExchangeController {
         AppInfo appInfo = App.getInfo(app_id);
         response.setResult("info",appInfo);
 
+        return response.toJSON();
+    }
+
+    /**
+     * 获取最近交易对的信息
+     * @param market
+     * @return
+     */
+    @RequestMapping("getLatestMarket")
+    String getLatestMarket(@RequestParam(value = "market", required = true) String market){
+        // 创建一个业务请求头
+        Response response = ResponseUtil.ceateRespone();
+
+        JSONObject rep = ThirdParty.getLatestMarketDetail(market);
+        if(rep!=null){
+             response.setResult(rep);
+        } else {
+            response.error(-30001,"交易对不存在");
+        }
         return response.toJSON();
     }
 }

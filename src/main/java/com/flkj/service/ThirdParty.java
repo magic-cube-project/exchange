@@ -117,4 +117,39 @@ public class ThirdParty {
         }
         return JSON.parseObject(String.valueOf(JSON.parseArray(String.valueOf(JSON.parseObject(res).get("result"))).get(0)));
     }
+
+    public static  JSONObject getLatestMarketDetail(String market){
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(new BaseUrl().getTick()+"getLatestMarketDetail?market="+market)
+                .get()
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Cache-Control", "no-cache")
+                .build();
+        try {
+
+            Response response = client.newCall(request).execute();
+            String responsesStr = response.body().string();
+            System.out.println(responsesStr);
+
+           JSONObject responseData = JSON.parseObject(responsesStr);
+
+            if ((boolean)responseData.get("Success") != true) {
+                throw new IOException();
+            } else {
+                System.out.println("-----------------------------");
+                System.out.println(responseData.get("Result"));
+                System.out.println("-----------------------------");
+                return (JSONObject) responseData.get("Result");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+    }
 }

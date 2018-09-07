@@ -1,6 +1,7 @@
 package com.util;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.HashMap;
 
@@ -50,6 +51,14 @@ public class Response {
     }
     public HashMap getResult() {
         return Result;
+    }
+
+    public void setResult(JSONObject result){
+
+        String resultText = JSON.toJSONString(result);
+        HashMap<String, Object> hashMap=JSON.parseObject(resultText, HashMap.class);
+        Result = hashMap;
+
     }
 
     public void setResult(HashMap result) {

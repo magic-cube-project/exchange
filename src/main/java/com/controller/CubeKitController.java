@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bean.AccessToken;
 import com.bean.AccountBalance;
 import com.bean.AppUserLink;
+import com.flkj.service.ThirdParty;
 import com.model.OpenUser;
 import com.model.Sendcoin;
 import com.model.User;
@@ -106,5 +107,25 @@ public class CubeKitController {
         response.setResult(map);
         return response.toJSON();
     }
+
+    /**
+     * 获取最近交易对的信息
+     * @param market
+     * @return
+     */
+    @RequestMapping("getLatestMarket")
+    String getLatestMarket(@RequestParam(value = "market", required = true) String market){
+        // 创建一个业务请求头
+        Response response = ResponseUtil.ceateRespone();
+
+        JSONObject rep = ThirdParty.getLatestMarketDetail(market);
+        if(rep!=null){
+            response.setResult(rep);
+        } else {
+            response.error(-30001,"交易对不存在");
+        }
+        return response.toJSON();
+    }
+
 
 }
