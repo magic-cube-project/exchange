@@ -22,6 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExchangeController {
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private ThirdParty thirdParty;
+
     @RequestMapping("")
     String index(){
         return "hello world";
@@ -61,7 +65,7 @@ public class ExchangeController {
         // 创建一个业务请求头
         Response response = ResponseUtil.ceateRespone();
 
-        JSONObject rep = ThirdParty.getLatestMarketDetail(market);
+        JSONObject rep = thirdParty.getLatestMarketDetail(market);
         if(rep!=null){
              response.setResult(rep);
         } else {

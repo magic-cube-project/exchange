@@ -13,7 +13,6 @@ public class SessionConfiguration {
 
     @Bean("springSessionDefaultRedisSerializer")
     public RedisSerializer<Object> defaultRedisSerializer(){
-        System.out.println("自定义Redis Session序列化加载成功");
         return valueSerializer();
     }
 

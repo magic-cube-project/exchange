@@ -26,6 +26,9 @@ public class Oauth2Controller {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private User user;
+
     //通过code换取网页授权access_token,这里测试展示使用的code为用户的user_id
     @RequestMapping(value = "access_token")
     String access_token(@RequestParam(value = "appid", required = true) String appid, @RequestParam(value = "grant_type", required = true) String grant_type, @RequestParam(value = "secret", required = true) String secret,@RequestParam(value = "code", required = true) String code){
@@ -61,7 +64,7 @@ public class Oauth2Controller {
             return response.toJSON();
         }
         System.out.println(userSession.getUser_id());
-        UserInfo userInfo = User.getUserInfo(userSession.getUser_id());
+        UserInfo userInfo = user.getUserInfo(userSession.getUser_id());
 
         int user_id = userInfo.getUser_id();
 

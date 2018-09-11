@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class IndexController {
+
     @RequestMapping("")
-    String index(){
+    String index() {
         return "<h2>welcome to exchange</h2>";
     }
+
 }

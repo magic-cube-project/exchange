@@ -9,6 +9,7 @@ import com.util.AccountValidatorUtil;
 import com.util.Response;
 import com.util.ResponseUtil;
 import com.util.TokenUitil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +29,13 @@ import java.util.List;
 @RequestMapping("/user")
 @EnableRedisHttpSession
 public class UserController{
+    @Autowired
+    private User user;
+
+    @RequestMapping("test")
+    String test(){
+        return user.test();
+    }
     /**
      * 用户登录接口
      * @return
@@ -37,7 +45,7 @@ public class UserController{
                  @RequestParam(value = "password", required = false) String password,HttpSession session){
         Response response = ResponseUtil.ceateRespone();
         password = TokenUitil.mergeToken(password,"MCC");
-        UserInfo userInfo = User.checkUserExist(tel,password);
+        UserInfo userInfo = user.checkUserExist(tel,password);
         if(userInfo==null){
             response.error(-10012,"用户不存在或密码不正确");
         } else {
@@ -68,13 +76,13 @@ public class UserController{
             return response.toJSON();
         }
         // 判断手机号是否存在
-        if(User.checkTelExist(tel)){
+        if(user.checkTelExist(tel)){
             response.error(-10009,"手机号已存在");
             return response.toJSON();
         }
         // 对密码的字符串进行加密
         password = TokenUitil.mergeToken(password,"MCC");
-        User.Register(response,name,tel,password);
+        user.Register(response,name,tel,password);
         return response.toJSON();
     }
 
@@ -98,14 +106,14 @@ public class UserController{
             return response.toJSON();
         }
         // 判断手机号是否存在
-        if(!User.checkTelExist(tel)){
+        if(!user.checkTelExist(tel)){
             response.error(-10013,"当前用户不存在");
             return response.toJSON();
         }
         // 对密码的字符串进行加密
         password = TokenUitil.mergeToken(password,"MCC");
 
-        User.changePassword(response,tel,password);
+        user.changePassword(response,tel,password);
         return response.toJSON();
 
     }
@@ -163,7 +171,7 @@ public class UserController{
             return response.toJSON();
         }
 
-        UserInfo userInfo = User.getUserInfo(userSession.getUser_id());
+        UserInfo userInfo = user.getUserInfo(userSession.getUser_id());
 
         HashMap map = new HashMap();
         // 设置请求返回内容
@@ -187,12 +195,12 @@ public class UserController{
             response.error(-10015,"用户未登录");
             return response.toJSON();
         }
-        UserInfo userInfo = User.getUserInfo(userSession.getUser_id());
+        UserInfo userInfo = user.getUserInfo(userSession.getUser_id());
         int user_id = userInfo.getUser_id();
         System.out.println("用户号"+user_id);
         // 如果coin货币请求all 请求所有的货币
 
-        List<AccountBalance> accountBalances = User.getBalance(user_id,coin);
+        List<AccountBalance> accountBalances = user.getBalance(user_id,coin);
         HashMap map = new HashMap();
         map.put("list",accountBalances);
         response.setResult(map);

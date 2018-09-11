@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 
-@ComponentScan(value = {"com.controller"})
+@ComponentScan(value = {"com.controller","com.flkj","com.model"})
 @SpringBootApplication
 public class Application extends WebAppConfig
 {

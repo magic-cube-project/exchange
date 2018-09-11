@@ -8,6 +8,8 @@ import com.flkj.bean.ThirdPartyToken;
 import com.flkj.config.BaseUrl;
 import com.squareup.okhttp.*;
 import com.util.TokenUitil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Date;
@@ -16,14 +18,22 @@ import java.util.HashMap;
 /**
  * Created by szc on 2018/8/21.
  */
+@Service
 public class ThirdParty {
 
     public static ThirdPartyToken thirdPartyToken;
 
+    @Autowired
+    public BaseUrl baseUrl;
+
+    public String test(){
+        return baseUrl.getTick();
+    }
+
     /**
      * 获取第三方的秘钥
      */
-    public static ThirdPartyToken getToken(){
+    public  ThirdPartyToken getToken(){
         if(thirdPartyToken==null || new Date().getTime()>=thirdPartyToken.getExpires_time())
         {
             refreshToken();
@@ -34,7 +44,7 @@ public class ThirdParty {
     /**
      * 刷新秘钥的token
      */
-    public static void refreshToken(){
+    public void refreshToken(){
         HashMap resmap = new HashMap();
         resmap.put("appId","leyou");
         resmap.put("appSecret","1eYou@8*93");
@@ -44,7 +54,7 @@ public class ThirdParty {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(resmap));
         Request request = new Request.Builder()
-                .url(new BaseUrl().getThirdParty()+"GetAccessToken")
+                .url(baseUrl.getThirdParty()+"GetAccessToken")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Cache-Control", "no-cache")
@@ -67,7 +77,7 @@ public class ThirdParty {
      * @param cellphone
      * @return
      */
-    public static int CreateUsers(String username,String cellphone){
+    public int CreateUsers(String username,String cellphone){
         String token = getToken().getToken();  //当前的秘钥
         OkHttpClient client = new OkHttpClient();
         int user_id = 0;
@@ -75,7 +85,7 @@ public class ThirdParty {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "[\n  {\n    \"username\": \""+ TokenUitil.genetateToken()+"\",\n    \"password\": \"S%tring8\",\n    \"cellphone\": \""+TokenUitil.genetateToken()+"\",\n  }\n]");
         Request request = new Request.Builder()
-                .url(new BaseUrl().getThirdParty()+"CreateUsers")
+                .url(baseUrl.getThirdParty()+"CreateUsers")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization", "Bearer "+token)
@@ -92,7 +102,7 @@ public class ThirdParty {
         return user_id;
     }
 
-    public static JSONObject Deposit(AppSendcoinList appSendcoinList){
+    public JSONObject Deposit(AppSendcoinList appSendcoinList){
         String token = getToken().getToken();  //当前的秘钥
         boolean _is = false;
         OkHttpClient client = new OkHttpClient();
@@ -101,7 +111,7 @@ public class ThirdParty {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType,
                 "[\n{\n\"id\": "+appSendcoinList.getId()+",\n\"coin\": \""+appSendcoinList.getCoin()+"\", \n\"amount\": "+appSendcoinList.getAmount()+", \n\"tag\": \""+appSendcoinList.getTag()+"\", \n\"description\": \""+appSendcoinList.getDescription()+"\", \n\"userId\": "+appSendcoinList.getUser_id()+" \n}\n]");        Request request = new Request.Builder()
-                .url(new BaseUrl().getThirdParty()+"Deposit?appid=leyou")
+                .url(baseUrl.getThirdParty()+"Deposit?appid=leyou")
                 .post(body)
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Authorization", "Bearer "+token)
@@ -118,12 +128,12 @@ public class ThirdParty {
         return JSON.parseObject(String.valueOf(JSON.parseArray(String.valueOf(JSON.parseObject(res).get("result"))).get(0)));
     }
 
-    public static  JSONObject getLatestMarketDetail(String market){
+    public  JSONObject getLatestMarketDetail(String market){
 
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
-                .url(new BaseUrl().getTick()+"getLatestMarketDetail?market="+market)
+                .url(baseUrl.getTick()+"getLatestMarketDetail?market="+market)
                 .get()
                 .addHeader("Content-Type", "application/json")
                 .addHeader("Cache-Control", "no-cache")

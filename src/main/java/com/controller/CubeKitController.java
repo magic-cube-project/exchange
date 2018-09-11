@@ -32,6 +32,17 @@ public class CubeKitController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ThirdParty thirdParty;
+
+    @Autowired
+    private Sendcoin sendcoin;
+
+    @Autowired
+    private User user;
+
+
+
     @RequestMapping("sendCoin")
     String sendCoin(@RequestParam(value = "access_token", required = true) String access_token,
                     @RequestParam(value = "openid", required = true) String openid,
@@ -55,7 +66,7 @@ public class CubeKitController {
             return response.toJSON();
         }
         // 插入发放记录
-        Sendcoin.add(appUserLink.getApp_id(),appUserLink.getUser_id(),amount,coin,description,tag,response);
+        sendcoin.add(appUserLink.getApp_id(),appUserLink.getUser_id(),amount,coin,description,tag,response);
         return response.toJSON();
     }
 
@@ -76,7 +87,7 @@ public class CubeKitController {
         String coin = (String) jsonParam.get("coin");
         String description = (String) jsonParam.get("description");
         String tag = (String) jsonParam.get("tag");
-        Sendcoin.add(app_id,user_id,amount,coin,description,tag,response);
+        sendcoin.add(app_id,user_id,amount,coin,description,tag,response);
         return response.toJSON();
     }
 
@@ -101,7 +112,7 @@ public class CubeKitController {
         // 需要查询用户的user_id
         int user_id = appUserLink.getUser_id();
 
-        List<AccountBalance> accountBalances = User.getBalance(user_id,coin);
+        List<AccountBalance> accountBalances = user.getBalance(user_id,coin);
         HashMap map = new HashMap();
         map.put("list",accountBalances);
         response.setResult(map);
@@ -118,7 +129,7 @@ public class CubeKitController {
         // 创建一个业务请求头
         Response response = ResponseUtil.ceateRespone();
 
-        JSONObject rep = ThirdParty.getLatestMarketDetail(market);
+        JSONObject rep = thirdParty.getLatestMarketDetail(market);
         if(rep!=null){
             response.setResult(rep);
         } else {
@@ -126,6 +137,4 @@ public class CubeKitController {
         }
         return response.toJSON();
     }
-
-
 }

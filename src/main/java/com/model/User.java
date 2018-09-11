@@ -7,12 +7,20 @@ import com.util.MyBatisUtil;
 import com.util.Response;
 import com.util.TokenUitil;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+@Service
 public class User {
+    @Autowired
+    private ThirdParty thirdParty;
+    public String test(){
+        return thirdParty.test();
+    }
     /**
      * 用户注册
      * @param response
@@ -20,7 +28,7 @@ public class User {
      * @param tel 电话号码
      * @param password 密码
      */
-    public static void Register(Response response, String name, String tel, String password){
+    public void Register(Response response, String name, String tel, String password){
 
         UserInfo userInfo = new UserInfo();
         // 设置用户token
@@ -36,7 +44,7 @@ public class User {
         try {
 
             // 告诉第三方平台我们注册的用户
-            int num = ThirdParty.CreateUsers(tel,tel);
+            int num = thirdParty.CreateUsers(tel,tel);
             userInfo.setUser_id(num);
             // 插入用户数据info表
             session.insert("com.bean.UserInfo.add", userInfo);
@@ -50,7 +58,7 @@ public class User {
         session.close();
     }
 
-    public static void changePassword(Response response,String tel, String password){
+    public void changePassword(Response response,String tel, String password){
 
         UserInfo userInfo = new UserInfo();
         // 设置用户token
@@ -79,7 +87,7 @@ public class User {
      * @param tel
      * @return
      */
-    public static boolean checkTelExist(String tel){
+    public boolean checkTelExist(String tel){
         UserInfo userInfo = new UserInfo();
         userInfo.setTel(tel);
         SqlSession session = MyBatisUtil.getSqlSession();
@@ -106,7 +114,7 @@ public class User {
      * 判断用户是否存在
      * @return
      */
-    public static UserInfo checkUserExist(String tel,String password){
+    public UserInfo checkUserExist(String tel,String password){
         boolean _is = false;
         UserInfo userInfo = new UserInfo();
         userInfo.setTel(tel);
@@ -129,7 +137,7 @@ public class User {
         }
         return userInfo;
     }
-    public static UserInfo getUserInfo(int user_id){
+    public UserInfo getUserInfo(int user_id){
         boolean _is = false;
         UserInfo userInfo = new UserInfo();
         userInfo.setUser_id(user_id);
@@ -152,7 +160,7 @@ public class User {
         return userInfo;
     }
 
-    public static List<AccountBalance> getBalance(int user_id,String coin){
+    public List<AccountBalance> getBalance(int user_id,String coin){
 
         SqlSession session = MyBatisUtil.getSqlSession();
         List<AccountBalance> accountBalances =  null;

@@ -6,13 +6,18 @@ import com.flkj.service.ThirdParty;
 import com.util.MyBatisUtil;
 import com.util.Response;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 /**
  * Created by szc on 2018/8/21.
  */
+@Service
 public class Sendcoin {
+    @Autowired
+    private ThirdParty thirdParty;
     /**
      * 发送游戏接模块接口
      * @param app_id
@@ -22,7 +27,7 @@ public class Sendcoin {
      * @param description
      * @param tag
      */
-    public static void add(int app_id, int user_id, int amount, String coin, String description, String tag, Response response){
+    public void add(int app_id, int user_id, int amount, String coin, String description, String tag, Response response){
         AppSendcoinList appSendcoinList = new AppSendcoinList();
         appSendcoinList.setCreate_time(new Date().getTime());
         appSendcoinList.setAmount(amount);
@@ -36,7 +41,7 @@ public class Sendcoin {
             // 插入用户数据info表
             session.insert("com.bean.AppSendcoinList.add", appSendcoinList);
             System.out.println("insert"+appSendcoinList.getId());
-            JSONObject jsonobj = ThirdParty.Deposit(appSendcoinList);
+            JSONObject jsonobj = thirdParty.Deposit(appSendcoinList);
             if(jsonobj==null) {
                 response.error(-9,"服务器请求失败");
                 throw new Exception();
